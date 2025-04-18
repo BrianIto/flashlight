@@ -1,0 +1,135 @@
+basePath: /
+definitions:
+  gorm.DeletedAt:
+    properties:
+      time:
+        type: string
+      valid:
+        description: Valid is true if Time is not NULL
+        type: boolean
+    type: object
+  models.Student:
+    properties:
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      grade:
+        description: The grade assigned to this student
+        type: integer
+      id:
+        description: The ID of the Student
+        type: integer
+      name:
+        description: The name of the Student
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  models.StudentCreate:
+    properties:
+      grade:
+        description: The Grade of the Student
+        type: integer
+      name:
+        description: The ID of the Student
+        type: string
+    type: object
+  models.StudentEdit:
+    properties:
+      grade:
+        description: The Grade of the Student
+        type: integer
+      id:
+        description: The Id of the student
+        type: integer
+      name:
+        description: The Name of the student
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: A simple CRUD API using Gin and GORM.
+  title: Student API
+  version: "1.0"
+paths:
+  /students:
+    get:
+      description: Get all students from the database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Student'
+            type: array
+      summary: Gets all students
+      tags:
+      - students
+    post:
+      consumes:
+      - application/json
+      description: Adds a student to the database
+      parameters:
+      - description: Student data
+        in: body
+        name: student
+        required: true
+        schema:
+          $ref: '#/definitions/models.StudentCreate'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Student'
+      summary: Create a new student
+      tags:
+      - students
+    put:
+      consumes:
+      - application/json
+      description: Edits a student from the database
+      parameters:
+      - description: Student data
+        in: body
+        name: student
+        required: true
+        schema:
+          $ref: '#/definitions/models.StudentEdit'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Student'
+      summary: Updates a student
+      tags:
+      - students
+  /students/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes a student from the database
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+          schema:
+            $ref: '#/definitions/models.Student'
+      summary: Deletes a student
+      tags:
+      - students
+swagger: "2.0"
